@@ -33,6 +33,7 @@ def ask_question(i):
         else:
             return False
 
+
 print("Hello and welcome to my quiz")
 score = 0
 for i in range(len(questions)):
