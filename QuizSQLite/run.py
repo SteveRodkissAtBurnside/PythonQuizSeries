@@ -30,9 +30,16 @@ def get_all_questions(db:Connection):
     results = cursor.fetchall()
     return results
 
+#main game loop
+score = 0
 questions = get_all_questions(db)
 for question in questions:
-    print(question)
+    answer = input(question[1]+"\n")
+    if answer.lower() == question[2].lower():
+        print("Correct!")
+        score += 1
+    else:
+        print("Wrong!")
 
 
 db.close()
