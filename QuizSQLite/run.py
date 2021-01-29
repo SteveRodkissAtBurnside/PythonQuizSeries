@@ -2,10 +2,11 @@
 import sqlite3
 from sqlite3.dbapi2 import Connection
 
-#get connection- local path to the folder thats open
-db = sqlite3.connect("./QuizSQLite/quiz.db")
+#get connection- local path to the folder thats open- so for this app, its in the PythonQuizSeries Folder (not the QuizSQLite folder!!!)
+db = sqlite3.connect("quiz.db")
 #create a row factory with it so we get useful stuff back from quesry rather that tuples
 db.row_factory = sqlite3.Row
+
 
 def show_all_questions(db: Connection):
     '''print out all the questions nicly- using a type hint to help code completions!!'''
@@ -40,7 +41,6 @@ def get_all_questions(db:Connection):
     results = cursor.fetchall()
     return results
 
-
 #main game loop
 score = 0
 questions = get_all_questions(db)
@@ -51,6 +51,6 @@ for question in questions:
         score += 1
     else:
         print("Wrong!")
-
+print(f"Your score was {score}/{len(questions)}")
 
 db.close()

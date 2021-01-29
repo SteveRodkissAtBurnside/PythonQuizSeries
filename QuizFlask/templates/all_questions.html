@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+<div class=w3-container>
+<h3>All Questions</h3>
+    <table class="w3-table-all">
+        <tr>
+            <th>id</th>
+            <th>Question</th>
+            <th>Answer</th>
+        </tr>
+        {% for entry in questions %}
+        <tr>
+            <td>{{entry['id']}}</td>
+            <td>{{entry['question']}}</td>
+            <td>{{entry['answer']}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
