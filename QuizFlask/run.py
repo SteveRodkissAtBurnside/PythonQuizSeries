@@ -1,4 +1,4 @@
-from flask import Flask, g
+from flask import Flask, g, request, redirect, url_for
 import sqlite3
 
 from flask.templating import render_template
@@ -45,6 +45,31 @@ def admin():
     cursor.execute(sql)
     questions = cursor.fetchall()
     return render_template("admin.html", questions=questions)
+
+@app.route("/add_question", methods=['GET','POST'])
+def add_question():
+    '''this will add a posted question to the database and redirect to the admin route again'''
+    if request.form:
+        #we got a form back now process by getting the items by their name
+        question = request.form.get("question")
+        answer = request.form.get("answer")
+        sql = "INSERT INTO questions(question,answer) VALUES(?,?)"
+        cursor = get_db().cursor()
+        cursor.execute(sql,(question,answer))
+        get_db().commit()
+    return redirect(url_for("admin"))
+
+@app.route("/delete_question", methods=["GET","POST"])
+def delete_question():
+    #get the value og the hidden input named "question_id" in the html template
+    if request.form:
+        question_id = request.form.get("question_id")
+        #and do sql stuff to remove it!
+        cursor = get_db().cursor()
+        sql = "DELETE FROM questions WHERE id=?"
+        cursor.execute(sql,(question_id,))
+        get_db().commit()
+    return redirect(url_for("admin"))
 
 
 ##############################################################################################################################

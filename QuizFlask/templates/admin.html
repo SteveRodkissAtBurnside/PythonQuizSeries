@@ -7,21 +7,29 @@
             <th>id</th>
             <th>Question</th>
             <th>Answer</th>
+            <th>Delete?</th>
         </tr>
         {% for entry in questions %}
         <tr>
             <td>{{entry['id']}}</td>
             <td>{{entry['question']}}</td>
             <td>{{entry['answer']}}</td>
+            <td>
+                <form action="./delete_question" method="post">
+                    <input type="hidden" value="{{entry['id']}}" name="question_id">
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </table>
 </div>
 <div class='w3-container'>
 <!-- add an input box to add another question -->
+<h3>Add a new Question</h3>
 <form action="/add_question" method="post">
-<input type="text" name="question" id="question">
-<input type="text" name="answer" id="answer">
+<input type="text" name="question">
+<input type="text" name="answer">
 <input type="submit" value="add">
 </form>
 </div>
