@@ -4,6 +4,8 @@ from sqlite3.dbapi2 import Connection
 
 #get connection- local path to the folder thats open
 db = sqlite3.connect("./QuizSQLite/quiz.db")
+#create a row factory with it so we get useful stuff back from quesry rather that tuples
+db.row_factory = sqlite3.Row
 
 def show_all_questions(db: Connection):
     '''print out all the questions nicly- using a type hint to help code completions!!'''
@@ -14,7 +16,15 @@ def show_all_questions(db: Connection):
     results = cursor.fetchall()
     print("id        Question                                          Answer")
     for result in results:
-        print(f"{result[0]:<10}{result[1]:<50}{result[2]:<50}")
+        print(f"{result['id']:<10}{result['question']:<50}{result['answer']:<50}")
+
+
+def delete_question_with_id(db:Connection, id):
+    '''delete the question with the given id from the database'''
+    cursor = db.cursor()
+    sql = "DELETE FROM questions WHERE id=?"
+    cursor.execute(sql,(id,))    #exectue the sql passing a tuple to replace the question mark(s)
+    db.commit()
 
 
 def add_question(db, question, answer):
@@ -30,12 +40,13 @@ def get_all_questions(db:Connection):
     results = cursor.fetchall()
     return results
 
+
 #main game loop
 score = 0
 questions = get_all_questions(db)
 for question in questions:
-    answer = input(question[1]+"\n")
-    if answer.lower() == question[2].lower():
+    answer = input(question['question']+"\n")
+    if answer.lower() == question['answer'].lower():
         print("Correct!")
         score += 1
     else:
