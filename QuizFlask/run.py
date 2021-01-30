@@ -1,10 +1,9 @@
-from flask import Flask, g, request, redirect, url_for
+from flask import Flask, g, request, redirect, url_for, render_template, flash
 import sqlite3
-
-from flask.templating import render_template
 
 #set up the app and db at the top so accessable to all code
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 #create the connection and the closing of connection- from https://flask.palletsprojects.com/en/1.1.x/patterns/sqlite3/
 #database file as a constant
 DATABASE = "quiz.db"
@@ -26,7 +25,37 @@ def close_connection(exception):
 '''Region for all the routes'''
 @app.route("/")
 def home():
-    return "Hello World"
+    cursor = get_db().cursor()
+    sql = "SELECT * FROM questions"
+    cursor.execute(sql)
+    questions = cursor.fetchall()
+    return render_template("home.html", questions=questions)
+
+#dynamic routing- get the id from the anchir tag clicked in the home page- send the correct question to the ask_question template
+@app.route("/ask_question/<int:id>", methods=["GET","POST"])
+def ask_question(id):
+    if request.method == "POST":
+        '''we posted- check answer and flash message'''
+        actual_answer = request.form.get("actual_answer")
+        user_answer = request.form.get("answer")
+        if user_answer.lower() == actual_answer.lower():
+            flash("Correct")
+        else:
+            flash("Incorrect")
+    '''get the specific question and put it on the page'''
+    cursor = get_db().cursor()
+    sql = "SELECT id,question,answer FROM questions WHERE id=?"
+    cursor.execute(sql,(id,))
+    entry = cursor.fetchone()
+    return render_template("ask_question.html",entry=entry)
+
+app.route("/check_answer")
+def check_answer():
+    '''check the form that is sent to see if the answer fits the input from the user'''
+    if request.form:
+        print(request.form)
+    return redirect()
+
 
 @app.route("/all_questions")
 def all_questions():
@@ -70,6 +99,9 @@ def delete_question():
         cursor.execute(sql,(question_id,))
         get_db().commit()
     return redirect(url_for("admin"))
+
+
+
 
 
 ##############################################################################################################################
