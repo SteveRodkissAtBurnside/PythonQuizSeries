@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+<div class=w3-container>
+<h3>All Questions</h3>
+    <table class="w3-table-all">
+        <tr>
+            <th>Question number</th>
+        </tr>
+        {% for entry in questions %}
+        <tr>
+            <td> <a href="./ask_question/{{entry.id}}">Question Number {{entry.id}}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

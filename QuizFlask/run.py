@@ -49,23 +49,6 @@ def ask_question(id):
     entry = cursor.fetchone()
     return render_template("ask_question.html",entry=entry)
 
-app.route("/check_answer")
-def check_answer():
-    '''check the form that is sent to see if the answer fits the input from the user'''
-    if request.form:
-        print(request.form)
-    return redirect()
-
-
-@app.route("/all_questions")
-def all_questions():
-    cursor = get_db().cursor()
-    sql = "SELECT * FROM questions"
-    cursor.execute(sql)
-    questions = cursor.fetchall()
-    return render_template("all_questions.html", questions=questions)
-
-
 @app.route("/admin")
 def admin():
     '''the admin route to add and remove questions- get all the current questions and send them to admin page'''
