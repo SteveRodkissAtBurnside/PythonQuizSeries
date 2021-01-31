@@ -64,17 +64,17 @@ def add_question():
 
 @app.route('/ask_question/<int:id>', methods=['GET','POST'])
 def ask_question(id):
+    '''ask the specific question passed by the parameter'''
+    question_to_ask = Question.query.filter_by(id=id).first()
     '''check if we posted an answer and display the correct question and a flash to show correct/wrong'''
     if request.method == 'POST':
         #we posted, check answer
         user_answer = request.form.get("answer")
-        actual_answer = request.form.get("actual_answer")
+        actual_answer = question_to_ask.answer
         if user_answer.lower() == actual_answer.lower():
             flash("You are correct!")
         else:
             flash("Sorry, you got it wrong :(")
-    '''ask the specific question passed by the parameter'''
-    question_to_ask = Question.query.filter_by(id=id).first()
     return render_template("ask_question.html",entry=question_to_ask)
 
 if __name__ == "__main__":

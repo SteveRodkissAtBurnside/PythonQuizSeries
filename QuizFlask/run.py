@@ -34,19 +34,20 @@ def home():
 #dynamic routing- get the id from the anchir tag clicked in the home page- send the correct question to the ask_question template
 @app.route("/ask_question/<int:id>", methods=["GET","POST"])
 def ask_question(id):
-    if request.method == "POST":
-        '''we posted- check answer and flash message'''
-        actual_answer = request.form.get("actual_answer")
-        user_answer = request.form.get("answer")
-        if user_answer.lower() == actual_answer.lower():
-            flash("Correct")
-        else:
-            flash("Incorrect")
     '''get the specific question and put it on the page'''
     cursor = get_db().cursor()
     sql = "SELECT id,question,answer FROM questions WHERE id=?"
     cursor.execute(sql,(id,))
     entry = cursor.fetchone()
+    if request.method == "POST":
+        '''we posted- check answer and flash message'''
+        actual_answer = entry['answer']
+        user_answer = request.form.get("answer")
+        if user_answer.lower() == actual_answer.lower():
+            flash("Correct")
+        else:
+            flash("Incorrect")
+
     return render_template("ask_question.html",entry=entry)
 
 @app.route("/admin")
