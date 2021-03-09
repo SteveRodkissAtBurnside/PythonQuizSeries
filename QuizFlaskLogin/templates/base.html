@@ -10,11 +10,26 @@
 <body>
     <div class="w3-bar w3-black">
         <a href="{{url_for('home')}}" class="w3-bar-item w3-button">Home</a>
+        <a href="{{url_for('login')}}" class="w3-bar-item w3-button">Login</a>
+        {% if current_user.is_authenticated %}
         <a href="{{url_for('admin')}}" class="w3-bar-item w3-button">Admin</a>
+        {% endif %}
     </div>
     <div class="w3-container">
         {% block body %}
         {% endblock %}
+    </div>
+    <!-- Flash a message from the python code- it will show when the page is refreshed or reloaded -->
+    <div class='w3-container'>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
     </div>
 </body>
 </html>

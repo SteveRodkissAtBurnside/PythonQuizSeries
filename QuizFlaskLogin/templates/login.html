@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block body %}
+<div class=w3-container>
+<form action="" method="post">
+    <h1>Login with Username and Password</h1>
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username">
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password">
+    <input type="submit" value="submit">
+</form>
+<form action="/logout" method="post">
+    <h1>Logout Here</h1>
+<input type="submit" value="Logout">
+</form>
+</div>
+{% endblock %}
