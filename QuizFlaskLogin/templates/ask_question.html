@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+<div class=w3-container>
+    <h3>Answer the Questions</h3>
+    <!-- post back to the same route -->
+    <form action="" method="post">
+        <label for="answer">{{entry.question}}</label>
+        <input type="text" name="answer" id="">
+        <input type="submit" value="Check Answers">
+    </form>
+</div>
+<!-- Flash a message from the python code- it will show when the page is refreshed or reloaded -->
+<div class='w3-container'>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+</div>
+
+
+{% endblock %}
